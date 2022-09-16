@@ -7,6 +7,9 @@ import { AppBodyComponent } from './app-body/app-body.component';
 import { NavigationComponent } from './app-body/navigation/navigation.component';
 import { IngredientsComponent } from './app-body/ingredients/ingredients.component';
 import { DescriptionComponent } from './app-body/description/description.component';
+import {HttpClientModule} from "@angular/common/http";
+import { SeveralLinesPipe } from './shared/pipes/several-lines/several-lines.pipe';
+import { RoundPipe } from './shared/pipes/round/round.pipe';
 
 @NgModule({
   declarations: [
@@ -15,10 +18,13 @@ import { DescriptionComponent } from './app-body/description/description.compone
     AppBodyComponent,
     NavigationComponent,
     IngredientsComponent,
-    DescriptionComponent
+    DescriptionComponent,
+    SeveralLinesPipe,
+    RoundPipe
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

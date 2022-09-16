@@ -1,1 +1,28 @@
-<p>app-body works!</p>
+<div class="flex-row">
+  <div [ngSwitch]="allRecipesState">
+    <div *ngSwitchCase="StateEnum.EMPTY">Where are your recipes?</div>
+    <div *ngSwitchCase="StateEnum.LOADING">Loading...</div>
+    <div *ngSwitchCase="StateEnum.ERROR">Something went wrong :-/</div>
+    <div *ngSwitchCase="StateEnum.SUCCESS" class="flex-column">
+      <button *ngFor="let recipe of allRecipes" class="recipe-preview" (click)="onUploadRecipe(recipe.id)">
+        {{ recipe.name }}
+      </button>
+    </div>
+  </div>
+  <div [ngSwitch]="activeRecipeState">
+    <div *ngSwitchCase="StateEnum.EMPTY">Select something</div>
+    <div *ngSwitchCase="StateEnum.LOADING">Loading...</div>
+    <div *ngSwitchCase="StateEnum.ERROR">Something went wrong :-/</div>
+    <div *ngSwitchCase="StateEnum.SUCCESS" class="flex-column">
+      <span><b>{{activeRecipe.name | uppercase}}</b></span>
+      <span *ngFor="let ingredient of activeRecipe.ingredients">
+        <b>{{ingredient.name}}:</b>
+        {{ingredient.quantity && activeRecipe.defaultCoefficient ? ((ingredient.quantity * activeRecipe.defaultCoefficient) | round:2) : ''}}
+        {{ingredient.isInPieces ? 'шт' : 'г'}}</span>
+      <div *ngIf="!!activeRecipe.comment && activeRecipe.comment.length > 0">
+        <b>Комментарии:</b>
+        <ul *ngFor="let commentLine of activeRecipe.comment | severalLines">{{commentLine}}</ul>
+      </div>
+    </div>
+  </div>
+</div>
