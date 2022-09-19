@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {take} from "rxjs";
-import {IRecipe, IRecipePreview, RecipesService} from "../services/recipes.service";
+import { take } from "rxjs";
+import { IRecipe, IRecipePreview, RecipesService } from "../services/recipes.service";
 
 enum StateEnum {
   LOADING = 'LOADING',
@@ -50,8 +50,8 @@ export class AppBodyComponent implements OnInit {
         if (!recipe) {
           this.activeRecipeState = StateEnum.ERROR;
         } else {
-          this.activeRecipe = recipe;
           this.activeRecipeState = StateEnum.SUCCESS;
+          this.activeRecipe = recipe;
         }
       },
       error: () => {

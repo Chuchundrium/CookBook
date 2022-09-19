@@ -24,9 +24,9 @@ export interface IRecipe {
 }
 
 export interface IRecipePreview {
-  id: string;
-  name: string;
-  tags: string[];
+  id: string
+  name: string
+  tags: string[]
 }
 
 interface IGetRecipesResponse {

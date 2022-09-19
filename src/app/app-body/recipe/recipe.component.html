@@ -1,0 +1,16 @@
+<div class="flex-column">
+  <span><b>{{recipe.name | uppercase}}</b></span>
+  <span *ngFor="let ingredient of recipe.ingredients">
+    <b>{{ingredient.name}}:</b>
+    {{ingredient.quantity ? ((ingredient.quantity * this.currentCoefficient) | round) : ''}}
+    {{ingredient.isInPieces ? Unit.ITEM : Unit.GRAM}}
+  </span>
+  <form [formGroup]="recipeForm">
+    <label for="finalSum">{{ Title.SUM }}:</label>
+    <input id="finalSum" formControlName="totalSum" type="number">
+  </form>
+  <div *ngIf="!!recipe.comment && recipe.comment.length > 0">
+    <b>{{ Title.COMMENTS }}:</b>
+    <ul *ngFor="let commentLine of recipe.comment | severalLines">{{commentLine}}</ul>
+  </div>
+</div>
