@@ -10,12 +10,16 @@
   gap: 10px;
 }
 
-.recipe-form {
-  width: 300px;
-  .form-item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.item {
+  width: 400px;
+  justify-content: space-between;
+  div {
+    input, button {
+      width: 50px;
+    }
   }
 }
 
+.comments {
+  width: 600px;
+}

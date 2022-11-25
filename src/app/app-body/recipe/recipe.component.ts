@@ -1,10 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { IRecipe } from '../../services/recipes.service';
+import {IIngredient, IRecipe} from '../../services/recipes.service';
 
 enum Title {
   COMMENTS = 'Комментарии',
-  SUM = 'Итого, г.'
+  SUM = 'Итого, г'
 }
 
 enum Unit {
@@ -25,31 +24,55 @@ export class RecipeComponent implements OnInit, OnDestroy {
 
   @Input() recipe: IRecipe;
 
-  recipeForm: FormGroup;
+  inEditIngredient: IIngredient | null;
+  inEditIngredientId: string | null = null;
+  isSumInEdit: boolean;
+
   currentCoefficient: number;
   defaultSum: number;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.currentCoefficient = this.recipe.defaultCoefficient ?? 1;
+
     this.defaultSum = this.recipe.ingredients
       .filter(i => i.isConsideredForVolume)
-      .map(i => i.quantity)
+      .map(i => i.isInPieces ? i.quantity * EGG_WEIGHT_GRAM : i.quantity)
       .reduce((sum, v) => sum + v);
-
-    this.recipeForm = this.formBuilder.nonNullable.group({
-      totalSum: Math.round(this.currentCoefficient * this.defaultSum)
-    })
-
-    this.recipeForm.controls['totalSum'].valueChanges.pipe().subscribe( v => {
-        this.currentCoefficient = v ? v / this.defaultSum : 1;
-      }
-    );
   }
 
   ngOnDestroy(): void {
-    this.recipeForm.reset();
   }
 
+  onEditClick(ingredient: IIngredient) {
+    if (this.isSumInEdit) {
+      this.isSumInEdit = false;
+    }
+    if (this.inEditIngredientId === ingredient.id) {
+      this.inEditIngredient = null;
+      this.inEditIngredientId = null;
+    } else {
+      this.inEditIngredient = ingredient;
+      this.inEditIngredientId = ingredient.id;
+    }
+  }
+
+  onSumEditClick() {
+    if (this.inEditIngredientId) {
+      this.inEditIngredient = null;
+      this.inEditIngredientId = null;
+    }
+    this.isSumInEdit = !this.isSumInEdit;
+  }
+
+  recalculateCoefficient(event: any) {
+    const updatedValue = event?.target?.value;
+    if (updatedValue && this.inEditIngredient) {
+      this.currentCoefficient = updatedValue / this.inEditIngredient.quantity;
+    }
+    if (updatedValue && this.isSumInEdit) {
+      this.currentCoefficient = updatedValue / this.defaultSum;
+    }
+  }
 }

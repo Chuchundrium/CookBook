@@ -1,15 +1,29 @@
 <div class="flex-column">
   <span><b>{{recipe.name | uppercase}}</b></span>
-  <span *ngFor="let ingredient of recipe.ingredients">
-    <b>{{ingredient.name}}:</b>
-    {{ingredient.quantity ? ((ingredient.quantity * this.currentCoefficient) | round) : ''}}
-    {{ingredient.isInPieces ? Unit.ITEM : Unit.GRAM}}
-  </span>
-  <form [formGroup]="recipeForm">
-    <label for="finalSum">{{ Title.SUM }}:</label>
-    <input id="finalSum" formControlName="totalSum" type="number">
-  </form>
-  <div *ngIf="!!recipe.comment && recipe.comment.length > 0">
+
+  <div *ngFor="let ingredient of recipe.ingredients" class="flex-row item">
+    <span>{{ ingredient.name }}, {{ ingredient.isInPieces ? Unit.ITEM : Unit.GRAM }}</span>
+    <div class="flex-row">
+      <b *ngIf="ingredient.id !== inEditIngredientId else ingredientInEdit" >{{ ingredient.quantity ? ((ingredient.quantity * this.currentCoefficient) | round) : '' }}</b>
+      <ng-template #ingredientInEdit>
+        <input type="number" [value]="ingredient.quantity ? ((ingredient.quantity * this.currentCoefficient) | round) : ''" (input)="recalculateCoefficient($event)" />
+      </ng-template>
+      <button (click)="onEditClick(ingredient)">{{ingredient.id === inEditIngredientId ? 'Done' : 'Edit'}}</button>
+    </div>
+  </div>
+
+  <div class="flex-row item">
+    <span>{{ Title.SUM }}:</span>
+    <div class="flex-row">
+      <b *ngIf="!isSumInEdit; else sumInput">{{ (defaultSum * this.currentCoefficient) | round }}</b>
+      <ng-template #sumInput>
+        <input type="number" [value]="(defaultSum * this.currentCoefficient) | round" (input)="recalculateCoefficient($event)" />
+      </ng-template>
+      <button (click)="onSumEditClick()">{{ isSumInEdit ? 'Done' : 'Edit' }}</button>
+    </div>
+  </div>
+
+  <div *ngIf="!!recipe.comment && recipe.comment.length > 0" class="comments">
     <b>{{ Title.COMMENTS }}:</b>
     <ul *ngFor="let commentLine of recipe.comment | multiLines">{{commentLine}}</ul>
   </div>
