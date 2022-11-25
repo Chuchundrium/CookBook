@@ -10,7 +10,12 @@
   gap: 10px;
 }
 
-.recipe-preview {
-  width: 200px;
-  height: 40px;
+.recipe-form {
+  width: 300px;
+  .form-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
+

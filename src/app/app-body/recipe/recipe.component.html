@@ -11,6 +11,6 @@
   </form>
   <div *ngIf="!!recipe.comment && recipe.comment.length > 0">
     <b>{{ Title.COMMENTS }}:</b>
-    <ul *ngFor="let commentLine of recipe.comment | severalLines">{{commentLine}}</ul>
+    <ul *ngFor="let commentLine of recipe.comment | multiLines">{{commentLine}}</ul>
   </div>
 </div>

@@ -8,7 +8,7 @@ import { NavigationComponent } from './app-body/navigation/navigation.component'
 import { RecipeComponent } from './app-body/recipe/recipe.component';
 import { DescriptionComponent } from './app-body/description/description.component';
 import {HttpClientModule} from "@angular/common/http";
-import { SeveralLinesPipe } from './shared/pipes/several-lines/several-lines.pipe';
+import { MultiLinesPipe } from './shared/pipes/multi-lines/milti-lines.pipe';
 import { RoundPipe } from './shared/pipes/round/round.pipe';
 import {ReactiveFormsModule} from "@angular/forms";
 
@@ -20,7 +20,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     NavigationComponent,
     RecipeComponent,
     DescriptionComponent,
-    SeveralLinesPipe,
+    MultiLinesPipe,
     RoundPipe
   ],
     imports: [

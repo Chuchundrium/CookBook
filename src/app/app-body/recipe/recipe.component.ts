@@ -1,16 +1,18 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {IRecipe} from "../../services/recipes.service";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { IRecipe } from '../../services/recipes.service';
 
 enum Title {
   COMMENTS = 'Комментарии',
-  SUM = 'Итого'
+  SUM = 'Итого, г.'
 }
 
 enum Unit {
   GRAM = 'г',
   ITEM = 'шт.'
 }
+
+const EGG_WEIGHT_GRAM: Readonly<number> = 60;
 
 @Component({
   selector: 'recipe',
