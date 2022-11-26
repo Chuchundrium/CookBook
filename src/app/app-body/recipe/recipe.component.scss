@@ -13,13 +13,20 @@
 .item {
   width: 400px;
   justify-content: space-between;
-  div {
-    input, button {
-      width: 50px;
-    }
+  input {
+    width: 50px;
   }
 }
 
 .comments {
   width: 600px;
 }
+
+.btn-container {
+  width: 400px;
+  justify-content: flex-end;
+  .reset-btn {
+    width: 70px;
+  }
+}
+

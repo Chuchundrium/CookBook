@@ -3,24 +3,16 @@
 
   <div *ngFor="let ingredient of recipe.ingredients" class="flex-row item">
     <span>{{ ingredient.name }}, {{ ingredient.isInPieces ? Unit.ITEM : Unit.GRAM }}</span>
-    <div class="flex-row">
-      <b *ngIf="ingredient.id !== inEditIngredientId else ingredientInEdit" >{{ ingredient.quantity ? ((ingredient.quantity * this.currentCoefficient) | round) : '' }}</b>
-      <ng-template #ingredientInEdit>
-        <input type="number" [value]="ingredient.quantity ? ((ingredient.quantity * this.currentCoefficient) | round) : ''" (input)="recalculateCoefficient($event)" />
-      </ng-template>
-      <button (click)="onEditClick(ingredient)">{{ingredient.id === inEditIngredientId ? 'Done' : 'Edit'}}</button>
-    </div>
+    <input type="number" [value]="ingredient.quantity ? ((ingredient.quantity * this.currentCoefficient) | round) : ''" (input)="recalculateCoefficient($event, ingredient.quantity)" />
   </div>
 
   <div class="flex-row item">
     <span>{{ Title.SUM }}:</span>
-    <div class="flex-row">
-      <b *ngIf="!isSumInEdit; else sumInput">{{ (defaultSum * this.currentCoefficient) | round }}</b>
-      <ng-template #sumInput>
-        <input type="number" [value]="(defaultSum * this.currentCoefficient) | round" (input)="recalculateCoefficient($event)" />
-      </ng-template>
-      <button (click)="onSumEditClick()">{{ isSumInEdit ? 'Done' : 'Edit' }}</button>
-    </div>
+    <input type="number" [value]="(defaultSum * this.currentCoefficient) | round" (input)="recalculateCoefficient($event, defaultSum)" />
+  </div>
+
+  <div class="flex-row btn-container">
+    <button class="reset-btn" (click)="setCurrentCoefficientToDefault()">Reset</button>
   </div>
 
   <div *ngIf="!!recipe.comment && recipe.comment.length > 0" class="comments">

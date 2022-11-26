@@ -1,5 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {IIngredient, IRecipe} from '../../services/recipes.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { IRecipe } from '../../services/recipes.service';
 
 enum Title {
   COMMENTS = 'Комментарии',
@@ -18,15 +18,11 @@ const EGG_WEIGHT_GRAM: Readonly<number> = 60;
   templateUrl: './recipe.component.html',
   styleUrls: ['./recipe.component.scss']
 })
-export class RecipeComponent implements OnInit, OnDestroy {
+export class RecipeComponent implements OnInit {
   readonly Title = Title;
   readonly Unit = Unit;
 
   @Input() recipe: IRecipe;
-
-  inEditIngredient: IIngredient | null;
-  inEditIngredientId: string | null = null;
-  isSumInEdit: boolean;
 
   currentCoefficient: number;
   defaultSum: number;
@@ -34,7 +30,7 @@ export class RecipeComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
-    this.currentCoefficient = this.recipe.defaultCoefficient ?? 1;
+    this.setCurrentCoefficientToDefault();
 
     this.defaultSum = this.recipe.ingredients
       .filter(i => i.isConsideredForVolume)
@@ -42,37 +38,14 @@ export class RecipeComponent implements OnInit, OnDestroy {
       .reduce((sum, v) => sum + v);
   }
 
-  ngOnDestroy(): void {
-  }
-
-  onEditClick(ingredient: IIngredient) {
-    if (this.isSumInEdit) {
-      this.isSumInEdit = false;
-    }
-    if (this.inEditIngredientId === ingredient.id) {
-      this.inEditIngredient = null;
-      this.inEditIngredientId = null;
-    } else {
-      this.inEditIngredient = ingredient;
-      this.inEditIngredientId = ingredient.id;
-    }
-  }
-
-  onSumEditClick() {
-    if (this.inEditIngredientId) {
-      this.inEditIngredient = null;
-      this.inEditIngredientId = null;
-    }
-    this.isSumInEdit = !this.isSumInEdit;
-  }
-
-  recalculateCoefficient(event: any) {
+  recalculateCoefficient(event: any, originalValue: number) {
     const updatedValue = event?.target?.value;
-    if (updatedValue && this.inEditIngredient) {
-      this.currentCoefficient = updatedValue / this.inEditIngredient.quantity;
+    if (updatedValue) {
+      this.currentCoefficient = updatedValue / originalValue
     }
-    if (updatedValue && this.isSumInEdit) {
-      this.currentCoefficient = updatedValue / this.defaultSum;
-    }
+  }
+
+  setCurrentCoefficientToDefault() {
+    this.currentCoefficient = this.recipe.defaultCoefficient ?? 1;
   }
 }
